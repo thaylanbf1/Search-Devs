@@ -217,7 +217,7 @@ Endpoints used:
 | Endpoint | Description |
 |---|---|
 | `GET /users/{username}` | User profile |
-| `GET /search/users?q={query}` | Search by username or full name |
+| `GET /search/users?q={query}` | Search by username |
 | `GET /users/{username}/repos` | User repositories |
 | `GET /repos/{username}/{repo}/commits` | Repository commits |
 | `GET /repos/{username}/{repo}/issues` | Issues and Pull Requests |
