@@ -1,0 +1,50 @@
+{
+  "back": "Back",
+  "search": {
+    "title_blue": "Search",
+    "title_purple": "d_evs",
+    "subtitle": "Find any developer and their best repositories",
+    "placeholder": "Enter the username",
+    "button": "Search",
+    "search_user_placeholder": "Search user...",
+    "search_another_placeholder": "Search another user..."
+  },
+  "error": {
+    "title": "User not found!",
+    "description": "Check the name and try again."
+  },
+  "loader": {
+    "searching": "Searching user..."
+  },
+  "repo": {
+    "view_code": "View code",
+    "updated": "Updated",
+    "time": {
+      "minutes": "{{count}} min ago",
+      "hours": "{{count}} h ago",
+      "days": "{{count}} days ago",
+      "months": "{{count}} months ago"
+    }
+  },
+  "user": {
+    "followers": "followers",
+    "following": "following",
+    "repos": "repos"
+  },
+  "repos": {
+    "sort": {
+      "stars": "Stars",
+      "created": "Creation period",
+      "updated": "Last update",
+      "pushed": "Last push",
+      "name": "Name"
+    },
+    "direction": {
+      "desc": "Descending",
+      "asc": "Ascending"
+    },
+    "empty": "No repositories found.",
+    "loading_more": "Loading more...",
+    "all_loaded": "All repositories have been loaded."
+  }
+}

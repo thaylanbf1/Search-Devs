@@ -1,0 +1,51 @@
+
+{
+  "back": "Voltar",
+  "search": {
+    "title_blue": "Search",
+    "title_purple": "d_evs",
+    "subtitle": "Encontre qualquer desenvolvedor e seus melhores repositórios",
+    "placeholder": "Digite o nome do usuário",
+    "button": "Buscar",
+    "search_user_placeholder": "Buscar usuário...",
+    "search_another_placeholder": "Buscar outro usuário..."
+  },
+  "error": {
+    "title": "Usuário não encontrado!",
+    "description": "Verifique o nome e tente novamente."
+  },
+  "loader": {
+    "searching": "Buscando usuário..."
+  },
+  "repo": {
+    "view_code": "Ver código",
+    "updated": "Atualizado",
+    "time": {
+      "minutes": "há {{count}} min",
+      "hours": "há {{count}} h",
+      "days": "há {{count}} dias",
+      "months": "há {{count}} meses"
+    }
+  },
+  "user": {
+    "followers": "seguidores",
+    "following": "seguindo",
+    "repos": "repos"
+  },
+  "repos": {
+    "sort": {
+      "stars": "Stars",
+      "created": "Periodo de criação",
+      "updated": "Última atualização",
+      "pushed": "Último push",
+      "name": "Nome"
+    },
+    "direction": {
+      "desc": "Decrescente",
+      "asc": "Crescente"
+    },
+    "empty": "Nenhum repositório encontrado.",
+    "loading_more": "Carregando mais...",
+    "all_loaded": "Todos os repositórios foram carregados."
+  }
+}
