@@ -4,25 +4,23 @@ import { EmailIcon, LinkIcon } from '@chakra-ui/icons'
 
 const User = ({login,name,avatar_url,followers,following,public_repos,location,bio,email,blog,twitter_username, linkedin_username}: UserProps) => {
 
-  // Ensures the URL is valid by adding the protocol (http/https) if it doesn't already exist.
-  //This prevents errors when opening links, as browsers require the explicit protocol.
-  //Ex: "github.com/user" -> "https://github.com/user"
-    const ensureHttp = (url: string) => {
-        return url.startsWith('http') ? url : `https://${url}`
-    }
+  const ensureHttp = (url: string) => {
+      return url.startsWith('http') ? url : `https://${url}`
+  }
 
-    const {t} = useTranslation()
+  const {t} = useTranslation()
+
   return (
-    <aside className="bg-white border font-inter border-[#e5e3f0] rounded-2xl p-6 flex flex-col gap-4 animate-[slideUp_0.35s_ease_both] sticky top-20 h-fit">
+    <aside className="bg-white border font-inter border-[#e5e3f0] rounded-2xl p-6 flex flex-col gap-4 animate-[slideUp_0.35s_ease_both] md:sticky md:top-20 h-fit">
       {/* Avatar + name */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <img
           src={avatar_url}
           alt={login}
-          className="w-25 h-25 rounded-full border-2 border-purple-DEFAULT object-cover shrink-0"
+          className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-purple-DEFAULT object-cover shrink-0"
         />
-        <div>
-          <h2 className="text-sm font-bold leading-tight">{name || login}</h2>
+        <div className="min-w-0">
+          <h2 className="text-sm font-bold leading-tight truncate">{name || login}</h2>
           <span className="text-sm text-gray-400 font-medium">@{login}</span>
         </div>
       </div>
@@ -54,7 +52,6 @@ const User = ({login,name,avatar_url,followers,following,public_repos,location,b
       <div className="flex flex-col gap-2">
         {location && (
           <div className="flex items-center gap-2 text-xs text-gray-400">
-            {/* location icon not available in Chakra icons */}
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
             </svg>
@@ -71,7 +68,7 @@ const User = ({login,name,avatar_url,followers,following,public_repos,location,b
         )}
         {blog && (
           <div className="flex items-center gap-2 text-xs text-gray-400">
-            <LinkIcon flexShrink={0} /> {/* Chakra ✅ */}
+            <LinkIcon flexShrink={0} />
             <a href={ensureHttp(blog)} target="_blank" rel="noreferrer" className="text-purple-DEFAULT hover:underline truncate">
               {blog}
             </a>
@@ -79,7 +76,6 @@ const User = ({login,name,avatar_url,followers,following,public_repos,location,b
         )}
         {twitter_username && (
           <div className="flex items-center gap-2 text-xs text-gray-400">
-             {/* Twitter/X icon not available in Chakra icons */}
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
@@ -90,7 +86,6 @@ const User = ({login,name,avatar_url,followers,following,public_repos,location,b
         )}
         {linkedin_username && (
           <div className="flex items-center gap-2 text-xs text-gray-400">
-             {/* LinkedIn icon not available in Chakra icons */}
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
