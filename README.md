@@ -31,6 +31,7 @@ The application has three main routes. On the **Home** page (`/`), the user sear
 ![preview](./src/assets/Image1.png)
 ![preview](./src/assets/Image2.png)
 ![preview](./src/assets/Image3.png)
+![preview](./src/assets/Image4.png)
 
 ---
 
