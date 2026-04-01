@@ -13,9 +13,11 @@ i18n
       en: { translation: enTranslation },
       pt: { translation: ptTranslation },
     },
+   supportedLngs: ['en', 'pt'],
     fallbackLng: 'pt',
+    load: 'languageOnly',
     interpolation: {
-      escapeValue: false, // React already handles XSS
+    escapeValue: false,
     },
   })
 
