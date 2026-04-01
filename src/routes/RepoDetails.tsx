@@ -75,16 +75,16 @@ const RepoDetails = () => {
 
     return (
         <>
-            <div className="border-b border-[#e5e3f0] bg-[#f8f7ff] px-8 py-4 flex items-center gap-4 sticky top-0 z-50 backdrop-blur-md">
+            <div className="border-b border-[#e5e3f0] bg-[#f8f7ff] px-4 py-4 flex items-center gap-3 sticky top-0 z-50 backdrop-blur-md overflow-hidden">
                 <BackBtn />
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-gray-400 truncate min-w-0">
                     <span className="font-semibold text-[#1a1523]">{username}</span>
                     {' / '}
                     <span className="font-semibold text-purple-DEFAULT">{reponame}</span>
                 </span>
             </div>
 
-            <div className="max-w-4xl mx-auto px-6 py-8">
+            <div className="max-w-4xl mx-auto px-3 sm:px-6 py-8">
                 {isLoading ? <Loader /> : (
                     <>
                         {repo?.description && (

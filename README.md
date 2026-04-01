@@ -28,10 +28,10 @@ Practice and consolidate core frontend development concepts with React, includin
 
 ## Features
 
-- Search GitHub users by **username or full name**
+- Search GitHub users by **username**
 - Display avatar, bio, location, email, blog, Twitter and LinkedIn
 - List repositories with **infinite scroll** (10 per page)
-- **Sort repositories** locally by stars, creation date, last update, last push or name — without extra API calls
+- **Sort repositories** by stars, creation date, last update, last push or name — via API parameters
 - Repository detail page with **Commits**, **Issues** and **Pull Requests** tabs
 - Error screen with an inline search field so the user can try again without navigating back
 - Responsive interface
@@ -62,9 +62,10 @@ export const UserSchema = z.object({
   public_repos: z.number(),
   email: z.string().nullable(),
   blog: z.string().nullable(),
-  twitter_username: z.string().nullable(),
+  twitter_username: z.string().nullable().optional(),
   linkedin_username: z.string().nullable().optional(),
 })
+ 
 
 export type UserProps = z.infer<typeof UserSchema>
 ```
@@ -77,16 +78,7 @@ export type UserProps = z.infer<typeof UserSchema>
 React lets you describe the UI declaratively for each possible state (loading, success, error) without manually touching the DOM.
 
 **How:**
-The app is split into routes (`Home`, `Repos`, `RepoDetails`) and reusable components (`User`, `Repo`, `Search`, `Loader`, `Error`, `BackBtn`). Hooks like `useState`, `useEffect`, `useCallback` and `useMemo` handle state, side effects and performance:
-
-```tsx
-// Local sort — no extra API call on sort/direction change
-const sortedRepos = useMemo(() => {
-  const sorted = [...repos]
-  sorted.sort((a, b) => { ... })
-  return sorted
-}, [repos, sort, direction])
-```
+The app is split into routes (`Home`, `Repos`, `RepoDetails`) and reusable components (`User`, `Repo`, `Search`, `Loader`, `Error`, `BackBtn`). Hooks like `useState`, `useEffect`, `useCallback` and `useRef` handle state, side effects and performance.
 
 ---
 
@@ -96,13 +88,13 @@ const sortedRepos = useMemo(() => {
 To navigate between pages without a full browser reload, keeping the SPA experience.
 
 **How:**
-Three main routes are defined with `createBrowserRouter`:
+Three main routes are defined with `createBrowserRouter`, wrapped in a shared `Layout`:
 
 ```tsx
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Layout />,
     children: [
       { path: '/', element: <Home /> },
       { path: '/profile/:username', element: <Repos /> },
@@ -140,17 +132,17 @@ An invisible sentinel element is placed at the bottom of the list. `Intersection
 ```tsx
 observerRef.current = new IntersectionObserver((entries) => {
   if (entries[0].isIntersecting) loadMore()
-}, { threshold: 1.0 })
+}, { threshold: 0 })
 
 if (sentinelRef.current) observerRef.current.observe(sentinelRef.current)
 ```
 
 ---
 
-### Local sorting — no API flooding
+### Sorting — via API parameters
 
 **Why:**
-Previously, every sort/direction change triggered a new API request. Sorting was moved to the frontend using `useMemo`, applying sort over already-loaded data with zero extra calls.
+Sorting is delegated to the GitHub API via `sort` and `direction` query parameters. Changing either value triggers a fresh fetch from page 1, ensuring results always reflect the selected order.
 
 ---
 

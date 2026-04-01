@@ -26,14 +26,12 @@ const lang_colors: Record<string, string> = {
 }
 
 const getLangColor = (lang?: string) => {
-    return lang ? (lang_colors[lang] ?? '#8b5cf6') : '#8b5cf6'
+  return lang ? (lang_colors[lang] ?? '#8b5cf6') : '#8b5cf6'
 }
 
-
-const Repo = ({name, login, description, language, html_url, forks_count, stargazers_count, updated_at}: RepoProps) => {
+const Repo = ({ name, login, description, language, html_url, forks_count, stargazers_count, updated_at }: RepoProps) => {
   const { t } = useTranslation()
 
-  
   // Calculates and formats the time since the repository was created/updated.
   const timeAgo = (dateStr?: string) => {
     if (!dateStr) return ''
@@ -45,7 +43,7 @@ const Repo = ({name, login, description, language, html_url, forks_count, starga
   }
 
   return (
-     <div className="bg-white font-inter border border-[#e5e3f0] rounded-xl p-5 flex flex-col gap-2.5 hover:border-purple-DEFAULT hover:shadow-[0_4px_20px_rgba(139,92,246,0.1)] transition-all">
+    <div className="bg-white font-inter border border-[#e5e3f0] rounded-xl p-4 sm:p-5 flex flex-col gap-2 hover:border-purple-DEFAULT hover:shadow-[0_4px_20px_rgba(139,92,246,0.1)] transition-all">
 
       <a href={html_url} target='_blank' rel="noreferrer">
         <h3 className="text-sm font-bold text-[#1a1523] hover:text-[#595cee]">{name}</h3>
@@ -55,7 +53,8 @@ const Repo = ({name, login, description, language, html_url, forks_count, starga
         <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{description}</p>
       )}
 
-      <div className="flex items-center flex-wrap gap-3.5 mt-1">
+      {/* First row — language, stars, forks */}
+      <div className="flex items-center flex-wrap gap-3 mt-1">
         {language && (
           <div className="flex items-center gap-1.5 text-xs text-gray-500">
             <span className="w-2.5 h-2.5 rounded-full inline-block shrink-0" style={{ background: getLangColor(language) }} />
@@ -75,23 +74,24 @@ const Repo = ({name, login, description, language, html_url, forks_count, starga
           </svg>
           <span>{forks_count}</span>
         </div>
+      </div>
 
+      {/* Second row — date and button, always on separate line to avoid overflow */}
+      <div className="flex items-center justify-between mt-1">
         {updated_at && (
-          <span className="text-[0.72rem] text-gray-500 ml-auto">
+          <span className="text-[0.72rem] text-gray-400">
             {t('repo.updated')} {timeAgo(updated_at)}
           </span>
         )}
-
         <Link
           to={`/profile/${login}/${name}`}
-          rel="noreferrer"
-          className="flex items-center gap-1.5 text-purple-DEFAULT text-xs font-semibold px-3 py-1.5 border border-purple-DEFAULT rounded-md hover:bg-purple-DEFAULT hover:text-white transition-all whitespace-nowrap"
+          className="flex items-center gap-1.5 text-purple-DEFAULT text-xs font-semibold px-3 py-1.5 border border-purple-DEFAULT rounded-md hover:bg-purple-DEFAULT hover:text-white transition-all whitespace-nowrap ml-auto"
         >
           {t('repo.view_code')}
         </Link>
       </div>
-    </div>  
-)
+    </div>
+  )
 }
 
 export default Repo

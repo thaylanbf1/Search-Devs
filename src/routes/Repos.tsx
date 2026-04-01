@@ -6,7 +6,7 @@ import Repo from '../components/Repo'
 import User from '../components/User'
 import Loader from '../components/Loader'
 import Error from '../components/Error'
-import { Select, Flex, InputGroup, InputLeftElement, Input } from '@chakra-ui/react'
+import { Select, Flex, InputGroup, InputLeftElement, Input, Button } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { useTranslation } from 'react-i18next'
 
@@ -22,6 +22,7 @@ const Repos = () => {
   const [repos, setRepos] = useState<RepoProps[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [searchInput, setSearchInput] = useState(username ?? '')
   const [error, setError] = useState(false)
   const [sort, setSort] = useState<SortOption>('stargazers')
   const [direction, setDirection] = useState<DirectionOption>('desc')
@@ -144,39 +145,45 @@ const Repos = () => {
   return (
     <>
       {/* Header */}
-      <div className="px-8 py-4 flex items-center gap-4 sticky top-0 z-50 backdrop-blur-md">
-        <span className="font-nunito font-bold text-sm gradient-text hidden sm:block whitespace-nowrap">
-          <Link to={`/`}>Search d_evs</Link>
-        </span>
-        <Flex align="center" gap={3} w="full" maxW="md">
-          <InputGroup
-            flex={1}
-            borderRadius="xl"
-            overflow="hidden"
-            border="1px solid #e5e3f0"
-            shadow="sm"
-          >
+      <div className="px-4 py-3 flex items-center gap-3 sticky top-0 z-50 backdrop-blur-md border-b border-[#e5e3f0] bg-[#f8f7ff]">
+        <Link to="/" className="font-nunito font-bold text-xs gradient-text whitespace-nowrap shrink-0 hidden sm:block">
+          Search d_evs
+        </Link>
+        <Flex align="center" gap={2} w="full" minW={0} maxW="md">
+          <InputGroup flex={1} borderRadius="lg" overflow="hidden" border="1px solid #e5e3f0" shadow="sm" minW={0}>
             <InputLeftElement pointerEvents="none" h="full" pl={1}>
-              <SearchIcon color="gray.300" />
+              <SearchIcon color="gray.300" boxSize={3} />
             </InputLeftElement>
             <Input
               placeholder={t('search.search_user_placeholder')}
-              defaultValue={username}
+              value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
               onKeyDown={e => {
-                if (e.key === 'Enter') loadUser((e.target as HTMLInputElement).value)
+                if (e.key === 'Enter') loadUser(searchInput)
               }}
               border="none"
               _focus={{ boxShadow: 'none' }}
               bg="white"
-              fontSize="sm"
-              h="40px"
-              pl={9}
+              fontSize="xs"
+              h="34px"
+              pl={8}
             />
           </InputGroup>
+          <Button
+            colorScheme="purple"
+            fontSize="xs"
+            h="34px"
+            px={3}
+            borderRadius="lg"
+            flexShrink={0}
+            onClick={() => loadUser(searchInput)}
+          >
+            <SearchIcon className="sm:hidden" />
+          </Button>
         </Flex>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6">
         {isLoading && <Loader />}
         {error && <Error loadUser={loadUser} />}
 
@@ -185,7 +192,8 @@ const Repos = () => {
             <User {...user} />
 
             <div className="flex flex-col gap-4">
-              <Flex gap={3} align="center">
+              {/* Sort controls */}
+              <Flex gap={2} align="center">
                 <Select
                   size="sm"
                   borderRadius="lg"
@@ -194,6 +202,7 @@ const Repos = () => {
                   borderColor="#e5e3f0"
                   focusBorderColor="purple.400"
                   bg="white"
+                  fontSize="xs"
                 >
                   <option value="stargazers">{t('repos.sort.stars')}</option>
                   <option value="created">{t('repos.sort.created')}</option>
@@ -210,12 +219,14 @@ const Repos = () => {
                   borderColor="#e5e3f0"
                   focusBorderColor="purple.400"
                   bg="white"
+                  fontSize="xs"
                 >
                   <option value="desc">{t('repos.direction.desc')}</option>
                   <option value="asc">{t('repos.direction.asc')}</option>
                 </Select>
               </Flex>
 
+              {/* Repo list */}
               {repos.length === 0 ? (
                 <div className="bg-white border border-[#e5e3f0] rounded-xl p-8 text-center text-gray-300 text-sm">
                   {t('repos.empty')}
