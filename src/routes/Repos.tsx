@@ -275,9 +275,7 @@ const Repos = () => {
 
             <div className="flex flex-col gap-4">
               
-              <div className="bg-white p-3 rounded-xl border border-[#e5e3f0] shadow-sm flex flex-col sm:flex-row gap-3">
-                
-                <Flex gap={2} flex={1} wrap="wrap">
+              <div className="bg-white p-3 rounded-xl border border-[#e5e3f0] shadow-sm flex flex-wrap gap-2">
                   <Select
                     size="sm"
                     borderRadius="lg"
@@ -287,8 +285,9 @@ const Repos = () => {
                     focusBorderColor="purple.400"
                     bg="gray.50"
                     fontSize="xs"
-                    w="auto"
-                    minW="120px"
+                    flex="1"
+                    minW="130px"
+                    maxW={{ base: 'full', sm: '180px' }}
                   >
                     <option value="all">🌐 {t('repos.filters.all_languages')}</option>
                     {availableLanguages.map(lang => (
@@ -305,15 +304,15 @@ const Repos = () => {
                     focusBorderColor="purple.400"
                     bg="gray.50"
                     fontSize="xs"
-                    w="auto"
+                    flex="1"
+                    minW="130px"
+                    maxW={{ base: 'full', sm: '160px' }}
                   >
                     <option value="all">🗂️ {t('repos.filters.all_types')}</option>
                     <option value="sources">📄 {t('repos.filters.sources')}</option>
                     <option value="forks">🔄 {t('repos.filters.forks')}</option>
                   </Select>
-                </Flex>
 
-                <Flex gap={2} wrap="wrap">
                   <Select
                     size="sm"
                     borderRadius="lg"
@@ -323,7 +322,9 @@ const Repos = () => {
                     focusBorderColor="purple.400"
                     bg="white"
                     fontSize="xs"
-                    w="auto"
+                    flex="1"
+                    minW="120px"
+                    maxW={{ base: 'full', sm: '160px' }}
                   >
                     <option value="stargazers">⭐ {t('repos.sort.stars')}</option>
                     <option value="forks_count">🔄 {t('repos.sort.forks')}</option>
@@ -342,12 +343,13 @@ const Repos = () => {
                     focusBorderColor="purple.400"
                     bg="white"
                     fontSize="xs"
-                    w="auto"
+                    flex="1"
+                    minW="110px"
+                    maxW={{ base: 'full', sm: '140px' }}
                   >
                     <option value="desc">⬇️ {t('repos.direction.desc')}</option>
                     <option value="asc">⬆️ {t('repos.direction.asc')}</option>
                   </Select>
-                </Flex>
               </div>
 
               {processedRepos.length === 0 ? (
