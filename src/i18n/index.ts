@@ -14,11 +14,14 @@ i18n
       en: { translation: enTranslation },
       pt: { translation: ptTranslation },
     },
-   supportedLngs: ['en', 'pt'],
+    supportedLngs: ['en', 'pt'],
     fallbackLng: 'pt',
     load: 'languageOnly',
+    detection: {
+      order: ['navigator'],  
+      caches: [],            
     interpolation: {
-    escapeValue: false,
+      escapeValue: false,
     },
   })
 
