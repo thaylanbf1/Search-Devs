@@ -19,7 +19,8 @@ i18n
     load: 'languageOnly',
     detection: {
       order: ['navigator'],  
-      caches: [],            
+      caches: [],
+    },
     interpolation: {
       escapeValue: false,
     },
