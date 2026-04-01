@@ -10,6 +10,7 @@ export const RepoSchema = z.object({
   description: z.string().nullable(),
   language: z.string().nullable(),
   html_url: z.string().url(),
+  fork: z.boolean(), 
   forks_count: z.number(),
   stargazers_count: z.number(),
   updated_at: z.string().nullable(),

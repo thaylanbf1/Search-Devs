@@ -4,6 +4,9 @@ import { EmailIcon, LinkIcon } from '@chakra-ui/icons'
 
 const User = ({ login, name, avatar_url, followers, following, public_repos, location, bio, email, blog, twitter_username, linkedin_username }: UserProps) => {
 
+  // Ensures the URL has a valid protocol ('http' or 'https').
+  // If it doesn't, adds 'https://' at the beginning to prevent the link
+  //from being treated as a relative/internal path by the browser.
   const ensureHttp = (url: string) => {
     return url.startsWith('http') ? url : `https://${url}`
   }

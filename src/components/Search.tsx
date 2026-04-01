@@ -1,13 +1,14 @@
 import { useState, type KeyboardEvent } from "react"
 import { SearchIcon } from '@chakra-ui/icons' 
-import {Input, InputGroup, InputLeftElement, Button, Flex} from '@chakra-ui/react'
+import { Input, InputGroup, InputLeftElement, Button, Flex, Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react'
 import { useTranslation } from "react-i18next"
 
 type SearchProps = {
     loadUser: (userName: string) => Promise<void>
+    error?: boolean
 }
 
-const Search = ({ loadUser }: SearchProps) => {
+const Search = ({ loadUser, error = false }: SearchProps) => {
 
     const [userName, setUserName] = useState('')
     const {t} = useTranslation() 
@@ -25,6 +26,14 @@ const Search = ({ loadUser }: SearchProps) => {
             <p className="text-gray-400 font-nunito text-sm mb-10 text-center">
                 {t('search.subtitle')}
             </p>
+
+            {error && (
+                <Alert status='error' borderRadius="xl" maxW="lg" mb={6}>
+                    <AlertIcon />
+                    <AlertTitle>{t('error.title')}</AlertTitle>
+                    <AlertDescription>{t('error.description')}</AlertDescription>
+                </Alert>
+            )}
 
             <Flex align="center" gap={5} w="full" maxW="lg">
                 <InputGroup flex={1} borderRadius="xl" overflow="hidden" border="1px solid #e5e3f0" shadow="md">

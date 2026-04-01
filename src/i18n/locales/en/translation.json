@@ -34,6 +34,7 @@
   "repos": {
     "sort": {
       "stars": "Stars",
+      "forks": "Forks",
       "created": "Creation period",
       "updated": "Last update",
       "pushed": "Last push",
@@ -43,7 +44,14 @@
       "desc": "Descending",
       "asc": "Ascending"
     },
+    "filters": {
+      "all_languages": "All Languages",
+      "all_types": "All Types",
+      "sources": "Sources Only",
+      "forks": "Forks Only"
+    },
     "empty": "No repositories found.",
+    "empty_filtered": "No repositories found with these filters.",
     "loading_more": "Loading more...",
     "all_loaded": "All repositories have been loaded."
   }

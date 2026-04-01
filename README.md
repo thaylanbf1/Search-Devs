@@ -1,6 +1,6 @@
 # Search Devs
 
-A web application to search GitHub users and explore their repositories, commits, issues and pull requests — consuming data directly from the official GitHub API.
+A web application to search GitHub users and explore their repositories, commits, issues, and pull requests — consuming data directly from the official GitHub API.
 
 ---
 
@@ -10,15 +10,15 @@ Practice and consolidate core frontend development concepts with React, includin
 
 - Consuming external REST APIs
 - State and side-effect management with hooks
-- Infinite scroll with `IntersectionObserver`
+- Custom infinite scroll using the native `IntersectionObserver` API
 - Runtime data validation with Zod
 - Client-side routing with React Router DOM
-- Internationalization with i18next
+- Internationalization (i18n) with i18next
 - Component architecture and code organization
 
 ---
 
-## Navigation flow
+## Navigation Flow
 
 > Simplified diagram to illustrate how the user navigates through the application.
 
@@ -31,179 +31,51 @@ The application has three main routes. On the **Home** page (`/`), the user sear
 ![preview](./src/assets/Image1.png)
 ![preview](./src/assets/Image2.png)
 ![preview](./src/assets/Image3.png)
-![preview](./src/assets/image4.png)
+![preview](./src/assets/Image4.png)
 
 ---
 
 ## Features
 
 - Search GitHub users by **username**
-- Display avatar, bio, location, email, blog, Twitter and LinkedIn
+- Display avatar, bio, location, email, blog, Twitter, and LinkedIn
 - List repositories with **infinite scroll** (10 per page)
-- **Sort repositories** by stars, creation date, last update, last push or name — via API parameters
-- Repository detail page with **Commits**, **Issues** and **Pull Requests** tabs
-- Error screen with an inline search field so the user can try again without navigating back
-- Responsive interface
+- **Dynamic Filters**: Filter repositories by programming language or type (Sources vs. Forks)
+- **Local Sorting**: Sort repositories by stars, forks, creation date, last update, or name — processed client-side to avoid API flooding
+- Repository detail page with **Commits**, **Issues**, and **Pull Requests** tabs
+- Inline error message with a search field so the user can try again without navigating back
+- Fully responsive interface
+- Multi-language support (Internationalization)
 
 ---
 
-## Technical decisions
+## Technical Decisions
 
----
+### TypeScript & Zod — Compile-time vs. Runtime Safety
 
-### TypeScript — Static typing
+Plain JavaScript gives no guarantee that API responses match the expected shape, meaning bugs often surface unexpectedly. While TypeScript adds static typing to catch errors during development, it only provides safety at *compile-time* and has no control over what an external API actually sends to the browser.
 
-**Why:**
-Plain JavaScript gives no guarantee that API responses match the expected shape — bugs would only surface at runtime. TypeScript adds static typing so errors are caught during development, before the app runs.
+To solve this, **Zod** was implemented to act as a runtime "bodyguard." If the GitHub API changes its contract or sends an unexpected data type (like a missing or null field), Zod parses and validates the payload at runtime. It strips out unexpected data and catches errors before they reach the React components, preventing silent crashes and hard-to-trace bugs. By combining it with TypeScript via `z.infer<>`, typing and validation stay perfectly in sync.
 
-**How:**
-Data types are defined via Zod schemas and inferred with `z.infer<>`, keeping validation and typing in sync:
+### React Router DOM — Client-side Routing
 
-```typescript
-export const UserSchema = z.object({
-  avatar_url: z.string().url(),
-  login: z.string(),
-  name: z.string().nullable(),
-  location: z.string().nullable(),
-  bio: z.string().nullable(),
-  followers: z.number(),
-  following: z.number(),
-  public_repos: z.number(),
-  email: z.string().nullable(),
-  blog: z.string().nullable(),
-  twitter_username: z.string().nullable().optional(),
-  linkedin_username: z.string().nullable().optional(),
-})
- 
+Used to navigate between pages without a full browser reload, maintaining a fast and seamless Single Page Application (SPA) experience.
 
-export type UserProps = z.infer<typeof UserSchema>
-```
+### Infinite Scroll — Native IntersectionObserver
 
----
+Loading all repositories at once could generate dozens of requests and freeze the UI. On the other hand, relying on third-party libraries for infinite scrolling often adds unnecessary bloat to the final bundle size.
 
-### React — UI and state management
+Instead, a custom infinite scroll was built using the native `IntersectionObserver` API. It is highly performant because it observes elements asynchronously without running on the main thread (unlike traditional scroll event listeners). It loads 10 items at a time, providing a much smoother User Experience (UX), especially on mobile devices.
 
-**Why:**
-React lets you describe the UI declaratively for each possible state (loading, success, error) without manually touching the DOM.
+### Filtering and Sorting — Client-side Processing
 
-**How:**
-The app is split into routes (`Home`, `Repos`, `RepoDetails`) and reusable components (`User`, `Repo`, `Search`, `Loader`, `Error`, `BackBtn`). Hooks like `useState`, `useEffect`, `useCallback` and `useRef` handle state, side effects and performance.
+The unauthenticated GitHub API has a strict rate limit of 60 requests per hour. If every filter or sort change triggered a new HTTP request, the application would quickly hit this limit and break.
 
----
+To prevent this, filtering and sorting are delegated to the frontend using the `useMemo` hook. Working in conjunction with the Infinite Scroll (which gradually populates a local state cache), it allows the user to manipulate the list instantly without triggering new network requests. This results in a highly responsive UI while strictly preserving API quotas.
 
-### React Router DOM — Client-side routing
+### Tailwind CSS & Chakra UI — Styling and Accessibility
 
-**Why:**
-To navigate between pages without a full browser reload, keeping the SPA experience.
-
-**How:**
-Three main routes are defined with `createBrowserRouter`, wrapped in a shared `Layout`:
-
-```tsx
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      { path: '/', element: <Home /> },
-      { path: '/profile/:username', element: <Repos /> },
-      { path: '/profile/:username/:reponame', element: <RepoDetails /> },
-    ],
-  },
-])
-```
-
----
-
-### Zod — Runtime data validation
-
-**Why:**
-The GitHub API can return null, missing or unexpected fields. Zod validates data at runtime and throws clear errors if the contract is broken, preventing silent bugs.
-
-**How:**
-`UserSchema` and `RepoSchema` are applied right after each request:
-
-```typescript
-const parsedUser = UserSchema.parse(userData)
-const parsedRepos = RepoSchema.array().parse(reposData)
-```
-
----
-
-### Infinite scroll — IntersectionObserver
-
-**Why:**
-Loading all repositories at once could generate hundreds of requests and slow down the UI. Infinite scroll loads 10 at a time, on demand.
-
-**How:**
-An invisible sentinel element is placed at the bottom of the list. `IntersectionObserver` detects when it enters the viewport and triggers the next page load:
-
-```tsx
-observerRef.current = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) loadMore()
-}, { threshold: 0 })
-
-if (sentinelRef.current) observerRef.current.observe(sentinelRef.current)
-```
-
----
-
-### Sorting — via API parameters
-
-**Why:**
-Sorting is delegated to the GitHub API via `sort` and `direction` query parameters. Changing either value triggers a fresh fetch from page 1, ensuring results always reflect the selected order.
-
----
-
-### Tailwind CSS — Utility-first styling
-
-**Why:**
-Utility-first approach that lets you apply styles directly in JSX without separate CSS files, speeding up development and keeping visual consistency.
-
----
-
-### Chakra UI — Accessible components
-
-**Why:**
-Components like `Input`, `Select`, `Tabs`, `Spinner`, `Alert` and `Badge` require complex behaviors and accessibility support. Chakra delivers this out of the box with a customizable theme.
-
-**How:**
-`ChakraProvider` wraps the entire app. Chakra components are used alongside Tailwind classes:
-
-```tsx
-<ChakraProvider resetCSS={false}>
-  <RouterProvider router={router} />
-</ChakraProvider>
-```
-
----
-
-### i18next — Internationalization
-
-**Why:**
-To support multiple languages in the UI without duplicating components.
-
-**How:**
-The `useTranslation` hook is used across components to render translated strings:
-
-```tsx
-const { t } = useTranslation()
-<option value="stargazers">{t('repos.sort.stars')}</option>
-```
-
----
-
-### Error handling
-
-**Why:**
-The GitHub API returns `404` for unknown users and `403` when the 60 req/hour rate limit is hit. Without handling, the app would break silently.
-
-**How:**
-`try/catch/finally` blocks centralize all error handling. On the error screen, the user can search again without navigating back:
-
-```tsx
-{error && <Error loadUser={loadUser} />}
-```
+Tailwind provides utility-first styling for rapid development. Chakra UI was integrated to deliver complex, accessible components (like Selects, Tabs, and Spinners) out of the box with consistent behavior across browsers.
 
 ---
 
@@ -225,21 +97,32 @@ Endpoints used:
 
 ---
 
-## Running the project
+## Running the Project
+
+### 💻 Prerequisites
+Before you begin, ensure you have the following installed on your machine:
+* **[Git](https://git-scm.com/)**: To clone the repository.
+* **[Node.js](https://nodejs.org/en/)**: The runtime environment. The **LTS** version (v18.x or higher) is recommended.
+* **npm** (or Yarn/pnpm): The package manager, which comes pre-installed with Node.js.
+
+> **💡 Editor Tip:** For the best development experience, it is highly recommended to use [VS Code](https://code.visualstudio.com/) along with the *Tailwind CSS IntelliSense*, *ESLint*, and *Prettier* extensions.
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/thaylanbf1/Search-Devs.git
 
-# Enter the folder
+# 2. Enter the project folder
 cd Search-Devs
 
-# Install dependencies
+# 3. Install all dependencies
 npm install
 
-# Start the dev server
+# 4. Start the local development server
 npm run dev
 ```
+
+After running the final command, the terminal will display a local link (usually http://localhost:5173 or http://localhost:3000). Just click it or copy it into your browser to see the app running!
+
 ---
 
 ## Author

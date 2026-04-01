@@ -4,7 +4,7 @@ import { type RepoProps } from '../types/repo'
 import { useTranslation } from 'react-i18next'
 
 // Returns the color associated with the repository's language.
-const lang_colors: Record<string, string> = {
+export const lang_colors: Record<string, string> = {
   JavaScript: '#f1e05a',
   TypeScript: '#3178c6',
   Python: '#3572A5',
@@ -17,7 +17,7 @@ const lang_colors: Record<string, string> = {
   Rust: '#dea584',
   PHP: '#4F5D95',
   HTML: '#e34c26',
-  CSS: '#563d7c',
+  HCL: '#563d7c',
   Shell: '#89e051',
   Swift: '#F05138',
   Kotlin: '#A97BFF',

@@ -35,7 +35,8 @@
   "repos": {
     "sort": {
       "stars": "Stars",
-      "created": "Periodo de criação",
+      "forks": "Forks",
+      "created": "Período de criação",
       "updated": "Última atualização",
       "pushed": "Último push",
       "name": "Nome"
@@ -44,7 +45,14 @@
       "desc": "Decrescente",
       "asc": "Crescente"
     },
+    "filters": {
+      "all_languages": "Todas Linguagens",
+      "all_types": "Todos os Tipos",
+      "sources": "Apenas Originais",
+      "forks": "Apenas Forks"
+    },
     "empty": "Nenhum repositório encontrado.",
+    "empty_filtered": "Nenhum repositório encontrado com estes filtros.",
     "loading_more": "Carregando mais...",
     "all_loaded": "Todos os repositórios foram carregados."
   }
