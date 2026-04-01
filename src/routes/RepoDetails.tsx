@@ -93,9 +93,9 @@ const RepoDetails = () => {
 
                         <Tabs colorScheme="purple" variant="enclosed">
                             <TabList>
-                                <Tab fontSize="sm">Commits ({commits.length})</Tab>
-                                <Tab fontSize="sm">Issues ({issues.length})</Tab>
-                                <Tab fontSize="sm">Pull Requests ({prs.length})</Tab>
+                                <Tab fontSize="sm" translate='no'>Commits ({commits.length})</Tab>
+                                <Tab fontSize="sm" translate='no'>Issues ({issues.length})</Tab>
+                                <Tab fontSize="sm" translate='no'>Pull Requests ({prs.length})</Tab>
                             </TabList>
 
                             <TabPanels>
