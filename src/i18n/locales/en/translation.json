@@ -17,7 +17,7 @@
     "searching": "Searching user..."
   },
   "repo": {
-    "view_code": "View code",
+    "view_code": "View history",
     "updated": "Updated",
     "time": {
       "minutes": "{{count}} min ago",

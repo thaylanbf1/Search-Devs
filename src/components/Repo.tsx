@@ -46,9 +46,10 @@ const Repo = ({name, login, description, language, html_url, forks_count, starga
 
   return (
      <div className="bg-white font-inter border border-[#e5e3f0] rounded-xl p-5 flex flex-col gap-2.5 hover:border-purple-DEFAULT hover:shadow-[0_4px_20px_rgba(139,92,246,0.1)] transition-all">
-      <Link to={`/profile/${login}/${name}`}>
+
+      <a href={html_url} target='_blank' rel="noreferrer">
         <h3 className="text-sm font-bold text-[#1a1523] hover:text-[#595cee]">{name}</h3>
-      </Link>
+      </a>
 
       {description && (
         <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{description}</p>
@@ -81,14 +82,13 @@ const Repo = ({name, login, description, language, html_url, forks_count, starga
           </span>
         )}
 
-        <a
-          href={html_url}
-          target="_blank"
+        <Link
+          to={`/profile/${login}/${name}`}
           rel="noreferrer"
           className="flex items-center gap-1.5 text-purple-DEFAULT text-xs font-semibold px-3 py-1.5 border border-purple-DEFAULT rounded-md hover:bg-purple-DEFAULT hover:text-white transition-all whitespace-nowrap"
         >
           {t('repo.view_code')}
-        </a>
+        </Link>
       </div>
     </div>  
 )

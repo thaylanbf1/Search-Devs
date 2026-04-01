@@ -18,7 +18,7 @@
     "searching": "Buscando usuário..."
   },
   "repo": {
-    "view_code": "Ver código",
+    "view_code": "Ver histórico",
     "updated": "Atualizado",
     "time": {
       "minutes": "há {{count}} min",
