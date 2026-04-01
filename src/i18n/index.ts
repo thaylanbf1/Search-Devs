@@ -9,6 +9,7 @@ i18n
   .use(LanguageDetector) // detects browser language automatically
   .use(initReactI18next)
   .init({
+    debug: true,
     resources: {
       en: { translation: enTranslation },
       pt: { translation: ptTranslation },
